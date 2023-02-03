@@ -51,5 +51,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Приложению необходим доступ к камере, чтобы отсканировать QR код</string>
 </dict>
 </plist>

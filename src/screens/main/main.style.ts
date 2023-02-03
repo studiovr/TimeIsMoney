@@ -7,9 +7,7 @@ interface Style {
 export default () => {
   return StyleSheet.create<Style>({
     container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    },
+      paddingTop: 12
+    }
   });
 };

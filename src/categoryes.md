@@ -29,6 +29,12 @@
   ]
 }
 
+Data
+  Category[]
+    title: string
+    description
+
+
 
 
 {

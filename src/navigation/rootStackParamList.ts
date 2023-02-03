@@ -3,4 +3,5 @@ export type RootStackParamList = {
 	DOCUMENTS: undefined;
 	MAIN: undefined;
 	SETTINGS: undefined;
+	SCANNER: undefined;
 }

@@ -7,7 +7,9 @@ interface Style {
 export default () => {
   return StyleSheet.create<Style>({
     container: {
-
+      flex: 1,
+      alignItems: "flex-start",
+      justifyContent: "flex-start",
     },
   });
 };
