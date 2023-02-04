@@ -6,7 +6,7 @@ import { RootStackParamList } from "../../navigation/rootStackParamList";
  * ? Local Imports
  */
 import createStyles from "./documentDetail.style";
-import { DocumentDetailItemModel } from "./typings";
+import { DocumentDetailItemModel, InputTypeEnum } from "./typings";
 import DocumentDetailItem from "./cell";
 import { DocumentFieldModel } from "./typings";
 
@@ -20,7 +20,8 @@ const settings: DocumentDetailItemModel[] = [
       mask: "",
       isValid: true,
       regex: "",
-      value: ""
+      value: "",
+      type: InputTypeEnum.TEXT,
     }
   },
   {
@@ -29,7 +30,8 @@ const settings: DocumentDetailItemModel[] = [
       mask: "",
       isValid: true,
       regex: "",
-      value: ""
+      value: "",
+      type: InputTypeEnum.TEXT,
     }
   },
   {
@@ -38,7 +40,8 @@ const settings: DocumentDetailItemModel[] = [
       mask: "",
       isValid: true,
       regex: "",
-      value: ""
+      value: "",
+      type: InputTypeEnum.TEXT,
     }
   }
 ]

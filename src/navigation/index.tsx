@@ -51,7 +51,7 @@ const Navigation = () => {
   return (
     <NavigationContainer
       ref={navigationRef}
-      theme={defaultTheme}
+      theme={defaultTheme as any}
       onReady={() => {
         isReadyRef.current = true;
       }}
