@@ -1,10 +1,22 @@
-export interface Category{
+export interface Category {
+    id: number
     title: string;
     description: string;
-    listDocuments: Documents[]
+    icon: string;
+    listDocuments: Document[];
 }
 
-interface Documents{
+interface Document {
+    id: number;
     title: string;
     status: boolean;
+    fields: DocumentField[];
+}
+
+interface DocumentField {
+    id: number;
+    title: string;
+    value: any;
+    mask: string;
+    regex: string;
 }

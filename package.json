@@ -23,6 +23,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-date-picker": "^4.2.6",
     "react-native-dynamic-vector-icons": "^1.2.0",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-gradle-plugin": "^0.71.13",
     "react-native-localization": "^2.3.1",

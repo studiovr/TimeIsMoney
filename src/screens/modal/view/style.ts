@@ -10,12 +10,10 @@ interface Style {
 export default () => {
   return StyleSheet.create<Style>({
     container: {
-      height: 92,
-      flexDirection: 'row',
-      alignItems: 'center',
+     
     },
     title: {
-      marginTop: 16,
+      marginTop: 15,
       marginBottom: 25,
       justifyContent: "center",
       fontSize: 18,
@@ -43,7 +41,8 @@ export default () => {
         borderColor:"#F74261",
         borderWidth: 1,
         textAlign: "center",
-    
+        marginLeft: 12,
+        marginRight: 12
     }
   });
 };

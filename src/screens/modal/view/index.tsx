@@ -3,12 +3,12 @@ import { Button, Text,TouchableOpacity, View } from "react-native";
 import { ModalModel } from "../modalModel";
 import createStyles from "../view/style";
 
-const modalView: React.FC<ModalModel> = ({ title, description, primaryAction, secondaryAction }) => {
+const modalView: React.FC<ModalModel> = ({ title, description, primaryAction, secondaryAction, style }) => {
     const styles = useMemo(() => createStyles(), []);
-
 
     return (
         <View style={{
+            ...style,
             shadowColor: "#000000",
             shadowOffset: {
                 width: 0,
@@ -20,9 +20,8 @@ const modalView: React.FC<ModalModel> = ({ title, description, primaryAction, se
             justifyContent: "center",
             alignItems: "center",
             alignContent: "center",
-            height:460,
-            width: 335,
-            backgroundColor: '#000000100',
+            backgroundColor: 'white',
+            borderRadius: 10,
         }}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.description}>{description}</Text>

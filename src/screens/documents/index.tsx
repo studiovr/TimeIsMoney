@@ -1,43 +1,34 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useMemo } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "../../navigation/rootStackParamList";
 /**
  * ? Local Imports
  */
 import createStyles from "./documents.style";
-import { DocumentModel } from "./typings";
 import DocumentItem from "./cell";
+import { DocumentModel } from "../main/typings";
 
 type documentsScreenProps = NativeStackScreenProps<RootStackParamList, 'DOCUMENTS'>;
 
-const settings: DocumentModel[] = [
-  {
-    title: 'Удостоверенияasasd',
-    isFilled: true
-  },
-  {
-    title: 'Написать разработчикам',
-    isFilled: false
-  },
-  {
-    title: 'Безопасность',
-    isFilled: false
-  }
-]
-
 const documentsScreen: React.FC<documentsScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
+  const data = route.params?.item;
+
+  navigation.setOptions({ title: data.title })
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={settings}
-        ItemSeparatorComponent = { () => 
+        data={data.listDocuments.map(d => new DocumentModel(d.id, d.title, d.status, d.fields))}
+        ItemSeparatorComponent={() =>
           (<View style={{ backgroundColor: "#F0F0F0", height: 1 }}></View>)}
-        renderItem={({ item }) => <DocumentItem {...item} />}
+        renderItem={({ item }) =>
+          <TouchableOpacity onPress={() => navigation.navigate("DOCUMENTDETAIL", { item: item })}>
+            <DocumentItem {...item} />
+          </TouchableOpacity>}
         keyExtractor={item => item.title}
-      />  
+      />
     </View>
   );
 };

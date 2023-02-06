@@ -1,67 +1,34 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useMemo, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "../../navigation/rootStackParamList";
-// import { SearchBar } from "../../shared/components/SeachBar";
-/**
- * ? Local Imports
- */
-import createStyles from "./main.style";
-import { DocumentCategoryModel } from "./typings";
+import { DocumentCategoryModel, IDocumentCategory } from "./typings";
 import DocumentCategoryItem from "./cell";
 import InputField from "../../shared/ui/InputField";
 import { InputTypeEnum } from "../documentDetail/typings";
+import { TextInput } from "react-native-paper";
 
+import createStyles from "./main.style";
+import { Category } from "../../store/typings";
+import { timing } from "react-native-reanimated";
 
 type mainScreenProps = NativeStackScreenProps<RootStackParamList, 'MAIN'>;
 
-const settings: DocumentCategoryModel[] = [
-  {
-    title: 'Удостоверения',
-    description: 'Паспорт РФ, загранпаспорт, свидетельство о рождении, военный билет',
-    icon: require('../../assets/profile.png'),
-    count: 3
-  },
-  {
-    title: 'Транспорт',
-    description: 'Водительское удостоверение, СТС, ПТС, ОСАГО, КАСКО',
-    icon: require('../../assets/transport.png'),
-    count: 0
-  },
-  {
-    title: 'Государство',
-    description: 'СНИЛС, ИНН',
-    icon: require('../../assets/state.png'),
-    count: 2
-  },
-  {
-    title: 'Свидетельства',
-    description: 'Свидетельство о браке, разводе, усыновлении',
-    icon: require('../../assets/default.png'),
-    count: 0
-  },
-  {
-    title: 'Медицинские',
-    description: 'ОМС, ДМС',
-    icon: require('../../assets/plus.png'),
-    count: 0
-  },
-  {
-    title: 'Охота',
-    description: 'Лицензия на оружие, разрешение РОХа, охотничий билет',
-    icon: require('../../assets/default.png'),
-    count: 0
-  },
-  {
-    title: 'Прочее',
-    description: 'Диплом, фотокопии',
-    icon: require('../../assets/default.png'),
-    count: 0
-  },
-]
-
 const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
+  const customData: IDocumentCategory[] = require('../../store/data.json');
+
+  const items = customData.map(c => new DocumentCategoryModel(c.id, c.title, c.description, c.icon, c.listDocuments));
+
+  const [data, setData] = useState<DocumentCategoryModel[]>(items);
+
+  const onTextChange = (text: string) => {
+    const searchText = text.toLowerCase();
+    const resultData = data.filter(s =>
+      s.title.toLowerCase().includes(searchText) || s.description.toLowerCase().includes(searchText)
+    );
+    setData(resultData.length == data.length ? items : resultData);
+  }
 
 //   const [testState, setTestState] = useState<string>(''); // for Text or Password Input
 //   const [testState, setTestState] = useState<number>(0); // for Number Input
@@ -102,12 +69,39 @@ const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
             options={[{id: 1, name: 'Test Name 1' }, {id: 2, name: 'Test Name 2' }]}
             renderOptionItem={(item) => item.name}
         /> */}
-        <FlatList
+        {/* <FlatList
             data={settings}
             renderItem={({ item }) => <DocumentCategoryItem {...item} />}
             keyExtractor={item => item.title}
         />
-      </View>
+      </View> */}
+      <TextInput
+        placeholder="Поиск"
+        left={<TextInput.Icon icon={require('../../assets/default.png')} />}
+        underlineColor="transparent"
+        activeUnderlineColor="transparent"
+        style={{
+          width: '100%',
+          height: 45,
+          backgroundColor: '#F2F2F2',
+          borderRadius: 4
+        }}
+        onChangeText={onTextChange}
+      />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={data}
+        contentContainerStyle={{
+          paddingTop: 4,
+          paddingBottom: 65
+        }}
+        renderItem={({ item }) =>
+          <TouchableOpacity style={styles.container} onPress = {() => navigation.navigate("DOCUMENTS", {item: item})}>
+            <DocumentCategoryItem {...item} />  
+          </TouchableOpacity>
+        }
+      />
+    </View>
   );
 };
 

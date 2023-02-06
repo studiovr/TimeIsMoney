@@ -49,10 +49,14 @@ const settings: DocumentDetailItemModel[] = [
 const DocumentDetailScreen: React.FC<DocumentDetailScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
 
+  const data = route.params?.item;
+
+  navigation.setOptions({title: data.title})
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={settings}
+        data={data.fields}
         renderItem={({ item }) => <DocumentDetailItem {...item} />}
         keyExtractor={item => item.title}
       /> 
