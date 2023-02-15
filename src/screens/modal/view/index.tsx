@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Button, Text,TouchableOpacity, View } from "react-native";
+import { Button, Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { ModalModel } from "../modalModel";
 import createStyles from "../view/style";
 
@@ -17,19 +18,20 @@ const modalView: React.FC<ModalModel> = ({ title, description, primaryAction, se
             shadowOpacity: 0.15,
             shadowRadius: 4,
             elevation: 10,
-            justifyContent: "center",
             alignItems: "center",
             alignContent: "center",
             backgroundColor: 'white',
             borderRadius: 10,
         }}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
+            {
+               description ?? <Text style={styles.description}>{description}</Text>
+            }
             <TouchableOpacity onPress={primaryAction.action} style={styles.button}>
-                <Text  style={{color: "white"}}>{primaryAction.title}</Text>
+                <Text style={{ color: "white" }}>{primaryAction.title}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={secondaryAction.action} >
-                <Text style={{color: "#F95C66", marginTop: 20}}>{secondaryAction.title}</Text>
+                <Text style={{ color: "#F95C66", marginTop: 20, fontSize: 16 }}>{secondaryAction.title}</Text>
             </TouchableOpacity>
         </View>
     )

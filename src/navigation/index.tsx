@@ -12,9 +12,14 @@ import DocumentsScreen from "../screens/documents";
 import MainScreen from "../screens/main";
 import SettingsScreen from "../screens/settings";
 import ScannerScreen from "../screens/scanner";
+import PhoneScreen from "../screens/phone"
 import { RootStackParamList } from "./rootStackParamList";
 import { Image, Pressable } from "react-native";
 import { HeaderBackButton } from "react-navigation-stack";
+import { color } from "react-native-reanimated";
+import mainScreen from "../screens/main";
+import authScreen from "../screens/auth";
+import confirmationCodeScreen from "../screens/confirmationCode";
 
 
 // ? If you want to use stack or tab or both
@@ -31,15 +36,6 @@ const Navigation = () => {
       border: 0
     },
   };
-
-  const profileButton = ({navigation}: {navigation: any}) => {
-    console.log("navigation in button, ", navigation);
-    return (
-      <Pressable onPress={() => navigation.navigate("SETTINGS")}>
-        <Image source={require('../assets/Vector.png')} />
-      </Pressable>
-    );
-  }
 
 
   const RootStack = createStackNavigator<RootStackParamList>();
@@ -59,13 +55,13 @@ const Navigation = () => {
       <RootStack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
           },
           gestureEnabled: true,
           gestureVelocityImpact: 0.3,
-          headerTintColor: '#91793A',
+          headerTintColor: '#141415',
           headerTitleStyle: {
-            color: "#000000",
+            color: "#000000"
           },
           headerTitleAlign: "center",
           cardStyle: {
@@ -75,15 +71,10 @@ const Navigation = () => {
         }}
       >
         <RootStack.Group
-          screenOptions={({navigation, route}) => ({
-            headerRight: () => {
-              console.log("ROUTE is", route);
-              console.log("Navigation is", navigation);
-              return profileButton({navigation});
-            },
+          screenOptions={({ navigation, route }) => ({
             headerLeft: (props) => {
               return props.canGoBack ? (
-                <HeaderBackButton 
+                <HeaderBackButton
                   {...props}
                   style={{
                     marginLeft: -4
@@ -99,14 +90,24 @@ const Navigation = () => {
           })}
         >
           <RootStack.Screen
-            name={"MAIN"}
-            component={MainScreen}
-            options={{ title: 'Документы' }}
+            name={"PHONE"}
+            component={PhoneScreen}
+            options={{ title: "" }}
+          />
+          {/* <RootStack.Screen
+            name={"CONFIRMATIONCODE"}
+            component={confirmationCodeScreen}
+            options={{ title: "" }}
+          /> */}
+          <RootStack.Screen
+            name={"AUTH"}
+            component={authScreen}
+            options={{ title: '' }}
           />
           <RootStack.Screen
             name={'DOCUMENTDETAIL'}
             component={DocumentDetailScreen}
-            options={{ title: "Как вытащить название из прошлого окна" }}
+            options={{ title: "" }}
           />
           <RootStack.Screen
             name={'DOCUMENTS'}
@@ -122,6 +123,18 @@ const Navigation = () => {
             name={'SCANNER'}
             component={ScannerScreen}
             options={{ title: 'Настройки' }}
+          />
+        </RootStack.Group>
+        <RootStack.Group
+        screenOptions={({ navigation, route }) => ({
+          headerLeft: (props) => {
+            return (<></>)
+          }
+        })}>
+          <RootStack.Screen
+            name={"MAIN"}
+            component={MainScreen}
+            options={{ title: 'Документы' }}
           />
         </RootStack.Group>
       </RootStack.Navigator>

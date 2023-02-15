@@ -18,16 +18,17 @@ export default () => {
       justifyContent: "center",
       fontSize: 18,
       fontFamily: "inter",
-      color: "black"
+      color: "#000000",
+      textAlign: "center",
+      fontStyle: "normal",
     },
     description: {
-        marginBottom: 32,
+        marginBottom: 70,
         fontSize: 12,
         fontFamily: "inter",
         marginLeft: 12,
         marginRight: 12,
-        color: "black"
-
+        color: "#141415"
     },
     button: {
         color: "white",

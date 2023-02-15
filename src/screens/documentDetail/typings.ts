@@ -1,37 +1,40 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/rootStackParamList";
+
 export interface DocumentDetailItemModel {
+    id: number;
     title: string;
-    field: DocumentFieldModel<any>;
+    field: DocumentFieldModel;
+    value: string;
+    validTextChange: (id: number, value: string) => void;
 }
 
 export enum InputTypeEnum {
     TEXT,
     NUMBER,
-    PASSWORD,
+    PHONE,
     SELECT,
     DATE,
 }
 
-export class DocumentFieldModel<T> {
+export class DocumentFieldModel {
     mask?: string;
     regex?: string;
-    isValid?: boolean;
     options?: any[];
-    value: T;
     type: InputTypeEnum;
+    placeholder?: string;
 
     constructor(
-        value: T,
         type: InputTypeEnum,
         mask?: string,
         regex?: string,
-        isValid?: boolean,
-        options?: any[]
+        options?: any[],
+        placeholder?: string
     ) {
         this.mask = mask;
         this.regex = regex;
-        this.isValid = isValid;
         this.options = options;
-        this.value = value;
         this.type = type;
+        this.placeholder = placeholder;
     }
 }

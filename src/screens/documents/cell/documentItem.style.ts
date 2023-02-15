@@ -12,11 +12,11 @@ export default () => {
     container: {
       height: 81,
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     image: {
-      width:28,
-      height: 28,
+      width:21,
+      height: 21,
       margin: 0,
       resizeMode: "contain"
     },
@@ -37,7 +37,7 @@ export default () => {
       textAlign: "center",
       height: 21,
       width: 44,
-      marginEnd: 0,
+      marginLeft: "auto"
     }
   });
 };

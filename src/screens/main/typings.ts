@@ -7,6 +7,7 @@ export interface IDocumentCategory {
     description: string;
     icon: string;
     listDocuments: Document[];
+    count?: number;
 }
 
 export class DocumentCategoryModel {
@@ -17,19 +18,20 @@ export class DocumentCategoryModel {
     count: number;
     listDocuments: Document[];
 
-
     constructor(
         id: number, 
         title: string, 
         description: string, 
         icon: string, 
-        listDocuments: Document[]) {
+        listDocuments: Document[],
+        count: number) {
 
             this.id = id;
             this.title = title;
             this.description = description;
             this.count = listDocuments.filter(x => x.status).length;
             this.listDocuments = listDocuments;
+            this.count = count;
             this.icon = images.get(icon) ?? require('../../assets/default.png');
     }
 }
@@ -91,10 +93,10 @@ export class DocumentFieldModel {
     }
 }
 
-const images: Map<string, ImageSourcePropType> = new Map<string, ImageSourcePropType> (
+export const images: Map<string, ImageSourcePropType> = new Map<string, ImageSourcePropType> (
     [
         ['default', require('../../assets/default.png')],
-        ['profile', require('../../assets/profile.png')],
+        ['profile', require('../../assets/profile2.png')],
         ['transport', require('../../assets/transport.png')],
         ['state', require('../../assets/state.png')],
         ['plus', require('../../assets/plus.png')],

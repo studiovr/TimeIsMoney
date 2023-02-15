@@ -1,83 +1,96 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useMemo, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { FlatList, Image, Pressable, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "../../navigation/rootStackParamList";
 import { DocumentCategoryModel, IDocumentCategory } from "./typings";
 import DocumentCategoryItem from "./cell";
-import InputField from "../../shared/ui/InputField";
-import { InputTypeEnum } from "../documentDetail/typings";
 import { TextInput } from "react-native-paper";
 
 import createStyles from "./main.style";
-import { Category } from "../../store/typings";
-import { timing } from "react-native-reanimated";
+import { loadString } from "../../store/keyStore/AsyncStorage";
 
 type mainScreenProps = NativeStackScreenProps<RootStackParamList, 'MAIN'>;
 
 const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
   const customData: IDocumentCategory[] = require('../../store/data.json');
-
-  const items = customData.map(c => new DocumentCategoryModel(c.id, c.title, c.description, c.icon, c.listDocuments));
-
+  const items = customData.map(c => new DocumentCategoryModel(c.id, c.title, c.description, c.icon, c.listDocuments, 0));
   const [data, setData] = useState<DocumentCategoryModel[]>(items);
+  const [dataRender, setDataRender] = useState<DocumentCategoryModel[]>(items);
+
+
+  navigation.setOptions({
+    headerLeft: (props) => {
+      return (<></>)
+    }
+  });
+
+  const effect = () => {
+    var map = new Map<string, number>();
+    const promises = customData.map(async (x) => {
+      var count = 0;
+      const proms = x.listDocuments.map(async (c) => {
+        const v = await loadString(c.id.toString());
+        console.log("V for customData x.id = " + x.id + " and listDocuments c.id = " + c.id + " has value " + v);
+        if (v === "true")
+          count += 1;
+        console.log("count = " + count);
+      });
+
+      await Promise.all(proms).then(() => {
+        console.log("Count items for x.id = " + x.id + " has " + count + " items");
+        map.set(x.id.toString(), count);
+      });
+      
+      return new Promise((r,rej) => {
+        r(true);
+      })
+    });
+    
+    Promise.all(promises).then(() => {
+      const newData = customData.map(cd => {
+        const categoryModel = new DocumentCategoryModel(cd.id, cd.title, cd.description, cd.icon, cd.listDocuments, cd.count ?? 0);
+        categoryModel.count = map.get(cd.id.toString()) ?? 0;
+        return categoryModel;
+      });
+      console.log("New Data is ", newData);
+      setData(newData);
+      setDataRender(newData);
+    })
+
+  };
+
+  useEffect(effect, []);
+
+  
+  navigation.addListener('focus', () => {
+    effect();
+  });
 
   const onTextChange = (text: string) => {
     const searchText = text.toLowerCase();
-    const resultData = data.filter(s =>
+
+    const resultData = dataRender.filter(s =>
       s.title.toLowerCase().includes(searchText) || s.description.toLowerCase().includes(searchText)
     );
-    setData(resultData.length == data.length ? items : resultData);
+    setData(resultData.length == items.length ? data : resultData);
   }
 
-//   const [testState, setTestState] = useState<string>(''); // for Text or Password Input
-//   const [testState, setTestState] = useState<number>(0); // for Number Input
-//   const [testState, setTestState] = useState<{ id: number, name: string }>(); // for Select Input (may be any type)
-//   const [testState, setTestState] = useState<Date>(new Date(Date.now() - 18 * 365 * 3600 * 24 * 1000)); // for Date Input
+  const settingsButton = () => {
+    return (
+      <Pressable onPress={() => navigation.navigate("SETTINGS")}>
+        <Image source={require('../../assets/Vector.png')} />
+      </Pressable>
+    );
+  }
+
+  navigation.setOptions({ headerRight: () => { return settingsButton() } })
 
   return (
     <View style={styles.container}>
-        {/* <InputField
-            type={InputTypeEnum.TEXT}
-            label='Test'
-            value={testState}
-            onChange={(newValue) => setTestState(newValue)}
-        /> */}
-        {/* <InputField
-            type={InputTypeEnum.NUMBER}
-            label='Test'
-            value={testState}
-            onChange={(newValue) => setTestState(newValue.replace(/[^0-9]/g, ''))}
-        /> */}
-        {/* <InputField
-            type={InputTypeEnum.PASSWORD}
-            label='Test'
-            value={testState}
-            onChange={(newValue) => setTestState(newValue)}
-        /> */}
-        {/* <InputField
-            type={InputTypeEnum.DATE}
-            label='Test'
-            value={testState}
-            onChange={(newValue) => setTestState(newValue)}
-        /> */}
-        {/* <InputField
-            type={InputTypeEnum.SELECT}
-            label='Select User'
-            value={testState}
-            onChange={(newValue) => setTestState(newValue)}
-            options={[{id: 1, name: 'Test Name 1' }, {id: 2, name: 'Test Name 2' }]}
-            renderOptionItem={(item) => item.name}
-        /> */}
-        {/* <FlatList
-            data={settings}
-            renderItem={({ item }) => <DocumentCategoryItem {...item} />}
-            keyExtractor={item => item.title}
-        />
-      </View> */}
       <TextInput
         placeholder="Поиск"
-        left={<TextInput.Icon icon={require('../../assets/default.png')} />}
+        left={<TextInput.Icon style={{}} icon={require('../../assets/search.png')} />}
         underlineColor="transparent"
         activeUnderlineColor="transparent"
         style={{
@@ -96,8 +109,8 @@ const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
           paddingBottom: 65
         }}
         renderItem={({ item }) =>
-          <TouchableOpacity style={styles.container} onPress = {() => navigation.navigate("DOCUMENTS", {item: item})}>
-            <DocumentCategoryItem {...item} />  
+          <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("DOCUMENTS", { item: item })}>
+            <DocumentCategoryItem {...item} />
           </TouchableOpacity>
         }
       />

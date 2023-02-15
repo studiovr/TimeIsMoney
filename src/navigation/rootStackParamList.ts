@@ -11,4 +11,7 @@ export type RootStackParamList = {
 	MAIN: undefined;
 	SETTINGS: undefined;
 	SCANNER: undefined;
+	PHONE: undefined;
+	AUTH: undefined;	
+	CONFIRMATIONCODE: undefined;
 }

@@ -17,6 +17,11 @@ const documentsScreen: React.FC<documentsScreenProps> = ({ navigation, route }) 
 
   navigation.setOptions({ title: data.title })
 
+  
+  navigation.addListener('focus', () => {
+    console.log("What we want")
+  });
+
   return (
     <View style={styles.container}>
       <FlatList

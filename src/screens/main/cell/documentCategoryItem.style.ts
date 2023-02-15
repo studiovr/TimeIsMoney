@@ -28,7 +28,7 @@ export default () => {
       fontFamily: "inter",
     },
     description: {
-      marginTop: -4,
+      marginTop: -6,
       marginLeft: 46,
       fontSize: 14,
       fontFamily: "inter",

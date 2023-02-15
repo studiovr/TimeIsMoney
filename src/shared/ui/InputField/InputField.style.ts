@@ -10,16 +10,17 @@ interface Style {
     selectSearchInputStyle: ViewStyle;
 }
 
+
 export default () => {
 	return StyleSheet.create<Style>({
 		inputContainer: {
 			position: 'relative',
-            width: 335,
+            width: '100%',
 			height: 60,
-			paddingTop: 10,
-			paddingRight: 18,
-			paddingBottom: 10,
-			paddingLeft: 18,
+			// paddingTop: 10,
+			// paddingRight: 18,
+			// paddingBottom: 10,
+			// paddingLeft: 18,
 			backgroundColor: '#F6F6F8',
 			borderWidth: 1,
 			borderStyle: 'solid',
@@ -29,7 +30,7 @@ export default () => {
 			position: 'absolute',
 			top: 0,
 			left: 0,
-			width: 335,
+			width: '100%',
 			height: 60,
             paddingTop: 32,
             paddingLeft: 18,
@@ -42,7 +43,7 @@ export default () => {
 			position: 'absolute',
             top: 0,
             left: 0,
-            width: 335,
+			width: '100%',
             height: 60,
 			paddingRight: 18,
 			paddingBottom: 10,

@@ -11,7 +11,7 @@ LogBox.ignoreAllLogs();
 const App = () => {
   var webSocket = new WebSocket("wss://socketsbay.com/wss/v2/1/demo/", ["ws", "wss"]);
 
-  const [securityVisible, setSecurityVisible] = useState<boolean>(true);
+  const [securityVisible, setSecurityVisible] = useState<boolean>(false);
 
   React.useEffect(() => {
     StatusBar.setBarStyle("dark-content");

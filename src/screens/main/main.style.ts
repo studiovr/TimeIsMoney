@@ -7,7 +7,6 @@ interface Style {
 export default () => {
   return StyleSheet.create<Style>({
     container: {
-      paddingTop: 12
     }
   });
 };

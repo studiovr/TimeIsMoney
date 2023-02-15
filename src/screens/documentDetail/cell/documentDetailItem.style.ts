@@ -7,9 +7,10 @@ interface Style {
 export default () => {
   return StyleSheet.create<Style>({
     container: {
+      width: '100%',
       flex: 1,
       alignItems: "flex-start",
-      justifyContent: "flex-start",
+      justifyContent: "flex-end",
     },
   });
 };

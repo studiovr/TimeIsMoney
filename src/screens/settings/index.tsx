@@ -8,38 +8,64 @@ import { SettingItemModel } from "./typings";
 import ModalView from '../modal/view';
 import { BlurView } from "@react-native-community/blur";
 import FS from "react-native-fs";
-import {SaveFile, ReadFile} from "../../store/storage"
+import { SaveFile, ReadFile } from "../../store/storage"
+import RNSecureKeyStore, {ACCESSIBLE} from "react-native-secure-key-store";
+
 
 type settingsScreenProps = NativeStackScreenProps<RootStackParamList, 'SETTINGS'>;
 
 const settingsScreen: React.FC<settingsScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
   const [isVisible, setVisible] = useState<boolean>(false);
-  
+  const [isVisibleDelete, setVisibleDelete] = useState<boolean>(false);
+
 
   const settings: SettingItemModel[] = [
     {
-      title: 'Резервная копия',
-      icon: require('../../assets/Vector.png'),
+      title: 'Мой профиль',
+      icon: require('../../assets/profile.jpg'),
       clickAction: () => {
-        console.log("Helloooo 0");
-        navigation.navigate("MAIN")
+        setVisibleDelete(true)
+      }
+    },
+    {
+      title: 'Резервная копия',
+      icon: require('../../assets/copy.png'),
+      clickAction: () => {
+        RNSecureKeyStore.get("key1")
+        .then((res) => {
+          console.log(res);
+        }, (err) => {
+          console.log(err);
+        });
         ReadFile();
       }
     },
     {
       title: 'Написать разработчикам',
-      icon: require('../../assets/Vector.png'),
+      icon: require('../../assets/messege.png'),
       clickAction: () => {
-        console.log("Hellooooo 1");
+        RNSecureKeyStore.set("key1", "value1", { accessible: ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY })
+          .then((res) => {
+            console.log(res);
+          }, (err) => {
+            console.log(err);
+          });
         SaveFile("asdsad");
       }
     },
     {
       title: 'Безопасность',
-      icon: require('../../assets/profile-icon.png'),
+      icon: require('../../assets/secuirity.png'),
       clickAction: () => {
         setVisible(true)
+      }
+    },
+    {
+      title: 'Сканнер',
+      icon: require('../../assets/secuirity.png'),
+      clickAction: () => {
+        navigation.navigate("SCANNER");
       }
     }
   ];
@@ -112,7 +138,7 @@ const settingsScreen: React.FC<settingsScreenProps> = ({ navigation, route }) =>
           <ModalView
             style={{
               width: 335,
-              height: 460
+              height: 460,
             }}
             title={"Безопасность"}
             description={"Приложение использует Связку ключей для хранения данных. Связка ключей это надёжное системное хранилище, доступ к которому имеете только вы с подтвержденных вами устройств. Фотографии сохраняются без шифрования в папке приложения." +
@@ -120,11 +146,61 @@ const settingsScreen: React.FC<settingsScreenProps> = ({ navigation, route }) =>
               "Введённый десять раз неправильно пин-код, удалит все документы и сбросит пин-код. Более подробно модете прочитать в политике конфиденциальности, которая доступна по ссылке ниже."}
             primaryAction={{
               title: "Политика конфиденциальности",
-              action: () => { navigation.navigate("DOCUMENTDETAIL") }
+              action: () => { }
             }}
             secondaryAction={{
               title: "Закрыть",
               action: () => { setVisible(false) }
+            }}
+          />
+        </View>
+      </Modal>
+      <Modal
+        style={{
+          width: '100%',
+          height: '100%'
+        }}
+        animationType="fade"
+        visible={isVisibleDelete}
+        transparent={true}
+        onRequestClose={() => {
+          console.log("Helloo");
+        }}>
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'transparent',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <BlurView
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              top: 0,
+              right: 0
+            }}
+            blurType="light"
+            blurAmount={2}
+            reducedTransparencyFallbackColor="white"
+          />
+          <ModalView
+            style={{
+              width: 335,
+              height: 206,
+            }}
+            title={"Удалить вашу учетную запись?"}
+            description={""}
+            primaryAction={{
+              title: "Удалить",
+              action: () => { }
+            }}
+            secondaryAction={{
+              title: "Отмена",
+              action: () => { setVisibleDelete(false) }
             }}
           />
         </View>
