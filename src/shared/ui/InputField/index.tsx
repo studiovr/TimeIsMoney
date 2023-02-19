@@ -112,27 +112,34 @@ const InputField: React.FC<InputFieldProps> = ({
 	mask,
 	regex,
 }, ref) => {
+	// const [inputValue, setInputValue] = useState<string>(value ?? '5');
 	const styles = useMemo(() => createStyles(), []);
 	const inputRef = useRef<any>();
 	const [isFocused, setIsFocused] = useState<boolean>(false);
+	const [localValue, setLocalValue] = useState<string | undefined>();
 	console.log('value in input field', value);
-	const [inputValue, setInputValue] = useState<string>(value ?? '');
 
 	const inputStyles = useMemo(
-		() => [
-			styles.input,
-			{
-				opacity: isFocused || inputValue ? 1 : 0,
-				zIndex: isFocused || inputValue ? 2 : 0
-			},
-		],
-		[isFocused, inputValue]
+		() => {
+			console.log("inputStyles styles applying with isFocused = "+ isFocused + " and inputValue " + value);
+			return [
+				styles.input,
+				{
+					opacity: isFocused || value || localValue ? 1 : 0,
+					zIndex: isFocused || value || localValue ? 2 : 0
+				},
+			]
+		},
+		[isFocused, value, localValue]
 	);
 	const labelStyles = useMemo(
-		() => !isFocused && !inputValue
+		() => {
+			console.log("labelStyles styles applying with isFocused = "+ isFocused + " and inputValue " + value + "and localValue " + localValue);
+			return !isFocused && !value && (!localValue || localValue === "")
 			? [styles.labelText, { zIndex: 1, paddingTop: 21 }]
-			: [styles.labelText, { zIndex: 3, paddingTop: 10 }],
-		[isFocused, inputValue]
+			: [styles.labelText, { zIndex: 3, paddingTop: 10 }]
+		},
+		[isFocused, value, localValue]
 	);
 
 	const labelElement = useMemo(() => (
@@ -140,22 +147,20 @@ const InputField: React.FC<InputFieldProps> = ({
 			? <Text
 				style={labelStyles}
 				onPress={(e) => {
-					console.log("Click on", e);
 					setIsFocused(() => true);
 					inputRef.current!.focus();
-					console.log('Work');
 				}}
 			>
 				{title}
 			</Text>
 			: null
-	), [type, title, inputRef, isFocused, inputValue]);
+	), [type, title, inputRef, isFocused, value, localValue]);
 
 	const onChange = (text: string) => {
+		setLocalValue(text);
 		if (isValid) {
 			isValid(validate(text, regex ?? ""), text);
-		}
-		setInputValue(text);
+		}	
 	}
 
 	return (
@@ -173,7 +178,7 @@ const InputField: React.FC<InputFieldProps> = ({
 						style={inputStyles}
 						currentItem={inputRef}
 						value={value == "undefined" ? "" : value}
-						onChange={onChange}
+						onChange={onChange} 
 					/>
 			}
 		</View>

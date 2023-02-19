@@ -10,6 +10,7 @@ export default () => {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
+      paddingBottom: 20,
     },
   });
 };

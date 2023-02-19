@@ -9,9 +9,9 @@ import createStyles from "./documents.style";
 import DocumentItem from "./cell";
 import { DocumentModel } from "../main/typings";
 
-type documentsScreenProps = NativeStackScreenProps<RootStackParamList, 'DOCUMENTS'>;
+type DocumentsScreenProps = NativeStackScreenProps<RootStackParamList, 'DOCUMENTS'>;
 
-const documentsScreen: React.FC<documentsScreenProps> = ({ navigation, route }) => {
+const DocumentsScreen: React.FC<DocumentsScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
   const data = route.params?.item;
 
@@ -38,4 +38,4 @@ const documentsScreen: React.FC<documentsScreenProps> = ({ navigation, route }) 
   );
 };
 
-export default documentsScreen;
+export default DocumentsScreen;

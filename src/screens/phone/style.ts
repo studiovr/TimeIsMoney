@@ -7,6 +7,8 @@ interface Style {
     button: ViewStyle;
     input: ViewStyle;
     textInput: ViewStyle;
+    inputWrong: ViewStyle;
+
 }
 
 export default () => {
@@ -52,8 +54,14 @@ export default () => {
         input: {
             fontSize: 18,
             flex: 1,
+            alignItems: "center"
+        },
+        inputWrong: {
+            fontSize: 18,
+            flex: 1,
             alignItems: "center",
-            // height: 60,
+            borderColor: "red",
+            borderWidth: 1
         },
         textInput: {
             fontSize: 18,

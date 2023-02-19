@@ -12,7 +12,7 @@ const documentDetailItem: React.FC<DocumentDetailItemModel> = ({ id, title, fiel
     const styles = useMemo(() => createStyles(), []);
     console.log('value in documentDetailItem', value);
     var _value = value;
-    console.log("field is ", field);
+    // console.log("field is ", field);
 
     const onChangeText = (valid: boolean, v: any) => {
         if(validTextChange && v != _value) {

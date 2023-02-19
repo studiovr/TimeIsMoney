@@ -6,6 +6,7 @@ export interface ModalModel {
     primaryAction: ActionModel;
     secondaryAction: ActionModel;
     style?: ViewStyle;
+    titleStyle?: ViewStyle;
 }
 
 interface ActionModel {

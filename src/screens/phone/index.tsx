@@ -7,10 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import PhoneInput from "react-native-phone-number-input";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/rootStackParamList";
+import WelcomePager from "../splash";
+import SplashScreen from "react-native-splash-screen";
+import { loadString, saveString } from "../../store/keyStore/AsyncStorage";
 
-type authScreenProps = NativeStackScreenProps<RootStackParamList, 'PHONE'>;
+type PhoneScreenProps = NativeStackScreenProps<RootStackParamList, 'PHONE'>;
 
-const phoneScreen: React.FC<authScreenProps> = ({navigation}) => {
+const PhoneScreen: React.FC<PhoneScreenProps> = ({ navigation }) => {
     const styles = useMemo(() => createStyles(), []);
     const phoneInputRef = useRef<{
         focus: () => void;
@@ -23,29 +26,46 @@ const phoneScreen: React.FC<authScreenProps> = ({navigation}) => {
     const [valid, setValid] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const phoneInput = useRef<PhoneInput>(null);
+    const [styleInput, setStyleInput] = useState(styles.input)
+    const [isValid, setIsValid] = useState(true);
 
-    const checkPhone = (value:string) => {
-        if(value.length === 10)
-            navigation.navigate("AUTH");
-        else{
+    const checkPhone = (value: string) => {
+        if (value.length === 10)
+            navigation.navigate("CONFIRMATIONCODE", { phoneNumber: value });
+        else {
+            console.log(value);
+            setIsValid(false);
             setValue("");
+            setStyleInput(styles.inputWrong)
         }
     }
 
+    loadString("phoneNumber").then((x) => {
+        setValid(x !== null)
+    });
+
+    if (valid == true) {
+        navigation.navigate("AUTH");
+    }
+
+    setTimeout(() => SplashScreen.hide(),
+        1
+    )
+
     return (
-        <View style={{alignItems: "center"}}>
+        <View style={{ alignItems: "center" }}>
             <Text style={styles.title}>Укажите ваш номер телефона</Text>
             <View style={{ flexDirection: "row", alignItems: 'center' }}>
-                {/* <Text style={{fontSize: 18}}>+7 |</Text> */}
-                {/* <TextInputMask ref={phoneInputRef} style={styles.input} placeholder={"Номер телефона"} mask={"+7 | [000] [000]-[00]-[00]"} autocomplete={true}></TextInputMask> */}
-                {/* <View style={{ borderColor: "#828282", borderStyle: "solid", borderWidth: 1, height: 1}}></View> */}
-                <PhoneInput
-                 containerStyle={styles.input}
+               <PhoneInput
+                    containerStyle={styleInput}
                     ref={phoneInput}
-                    defaultValue={value}
                     defaultCode="RU"
+                    value={value}
+                    defaultValue={value}
                     layout="first"
                     onChangeText={(text) => {
+                        setStyleInput(styles.input);
+                        setIsValid(true)
                         setValue(text);
                     }}
                     onChangeFormattedText={(text) => {
@@ -55,9 +75,12 @@ const phoneScreen: React.FC<authScreenProps> = ({navigation}) => {
                     withShadow
                     autoFocus
                     placeholder="Номер телефона"
-                    textInputProps={{maxLength: 10}}
+                    textInputProps={{ maxLength: 10 }}
                 />
             </View>
+            {
+                !isValid ? <Text style={{color: "red", marginTop: 10}}>Неверный номер телефона</Text> : <></>
+            }
             <Text style={styles.description}>Продолжая, вы соглашаетесь со сбором и обработкой персональных данных</Text>
             <TouchableOpacity onPress={() => checkPhone(value)} style={styles.button}>
                 <Text style={{ color: "white", fontSize: 16 }}>Продолжить</Text>
@@ -66,4 +89,4 @@ const phoneScreen: React.FC<authScreenProps> = ({navigation}) => {
     )
 }
 
-export default phoneScreen;
+export default PhoneScreen

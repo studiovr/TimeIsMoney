@@ -13,5 +13,8 @@ export type RootStackParamList = {
 	SCANNER: undefined;
 	PHONE: undefined;
 	AUTH: undefined;	
-	CONFIRMATIONCODE: undefined;
+	CONFIRMATIONCODE: {
+		phoneNumber: string;
+	};
+	SPLASH: undefined;
 }

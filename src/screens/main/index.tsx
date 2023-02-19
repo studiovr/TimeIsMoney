@@ -9,15 +9,15 @@ import { TextInput } from "react-native-paper";
 import createStyles from "./main.style";
 import { loadString } from "../../store/keyStore/AsyncStorage";
 
-type mainScreenProps = NativeStackScreenProps<RootStackParamList, 'MAIN'>;
+type MainScreenProps = NativeStackScreenProps<RootStackParamList, 'MAIN'>;
 
-const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
+const MainScreen: React.FC<MainScreenProps> = ({ navigation, route }) => {
   const styles = useMemo(() => createStyles(), []);
   const customData: IDocumentCategory[] = require('../../store/data.json');
   const items = customData.map(c => new DocumentCategoryModel(c.id, c.title, c.description, c.icon, c.listDocuments, 0));
   const [data, setData] = useState<DocumentCategoryModel[]>(items);
   const [dataRender, setDataRender] = useState<DocumentCategoryModel[]>(items);
-
+  const [fcs, setFcs] = useState<number>(0);
 
   navigation.setOptions({
     headerLeft: (props) => {
@@ -60,11 +60,12 @@ const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
 
   };
 
-  useEffect(effect, []);
+  useEffect(effect, [fcs]);
 
   
   navigation.addListener('focus', () => {
-    effect();
+    console.log("fcd = ", fcs)
+    setFcs(fcs+1)
   });
 
   const onTextChange = (text: string) => {
@@ -118,4 +119,4 @@ const mainScreen: React.FC<mainScreenProps> = ({ navigation, route }) => {
   );
 };
 
-export default mainScreen;
+export default MainScreen;

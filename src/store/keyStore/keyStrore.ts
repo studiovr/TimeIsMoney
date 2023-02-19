@@ -10,14 +10,14 @@ export function Set(key: string, value: string) {
 		});
 }
 
-export function Get(key: string) {
-	return RNSecureKeyStore.get(key);
+export async function Get(key: string) {
+	return await RNSecureKeyStore.get(key);
 }
 
 export function Remove(key: string) {
 	return RNSecureKeyStore.remove(key)
 		.then((res) => {
-			console.log(res);
+			console.log(res + " " + key);
 		}, (err) => {
 			console.log(err);
 		});

@@ -14,12 +14,9 @@ import SettingsScreen from "../screens/settings";
 import ScannerScreen from "../screens/scanner";
 import PhoneScreen from "../screens/phone"
 import { RootStackParamList } from "./rootStackParamList";
-import { Image, Pressable } from "react-native";
 import { HeaderBackButton } from "react-navigation-stack";
-import { color } from "react-native-reanimated";
-import mainScreen from "../screens/main";
-import authScreen from "../screens/auth";
-import confirmationCodeScreen from "../screens/confirmationCode";
+import AuthScreen from "../screens/auth";
+import ConfirmationCodeScreen from "../screens/confirmationCode";
 
 
 // ? If you want to use stack or tab or both
@@ -94,20 +91,24 @@ const Navigation = () => {
             component={PhoneScreen}
             options={{ title: "" }}
           />
-          {/* <RootStack.Screen
+          <RootStack.Screen
             name={"CONFIRMATIONCODE"}
-            component={confirmationCodeScreen}
+            component={ConfirmationCodeScreen}
             options={{ title: "" }}
-          /> */}
+          />
           <RootStack.Screen
             name={"AUTH"}
-            component={authScreen}
+            component={AuthScreen}
             options={{ title: '' }}
           />
           <RootStack.Screen
             name={'DOCUMENTDETAIL'}
             component={DocumentDetailScreen}
-            options={{ title: "" }}
+            options={{ title: "", 
+           headerTitleStyle: {textAlign: "center"},
+        headerTitleContainerStyle: { width: "75%"}
+
+      }}
           />
           <RootStack.Screen
             name={'DOCUMENTS'}
@@ -122,7 +123,7 @@ const Navigation = () => {
           <RootStack.Screen
             name={'SCANNER'}
             component={ScannerScreen}
-            options={{ title: 'Настройки' }}
+            options={{ title: '' }}
           />
         </RootStack.Group>
         <RootStack.Group
@@ -134,8 +135,9 @@ const Navigation = () => {
           <RootStack.Screen
             name={"MAIN"}
             component={MainScreen}
-            options={{ title: 'Документы' }}
+            options={{ title: 'Документы'}}
           />
+          
         </RootStack.Group>
       </RootStack.Navigator>
     </NavigationContainer>
