@@ -31,7 +31,7 @@
     "react-native-gradle-plugin": "^0.71.13",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-localization": "^2.3.1",
-    "react-native-paper": "^5.1.4",
+    "react-native-paper": "^5.2.0",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-reanimated": "^2.14.4",
